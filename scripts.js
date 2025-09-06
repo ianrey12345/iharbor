@@ -1,110 +1,162 @@
-let cart = []; // Array to store cart items
+// Cart functionality
+let cart = [];
+let cartCount = 0;
 
-// Function to update the cart button text
-function updateCartButton() {
-    const cartButton = document.getElementById('cart-button');
-    cartButton.textContent = `Cart (${cart.length})`;
-}
-
-// Function to toggle the shopping cart modal
-function toggleCart() {
-    const cartModal = document.getElementById('cart-modal');
-    const cartItemsList = document.getElementById('cart-items');
-    cartItemsList.innerHTML = ''; // Clear previous items in the cart modal
-
-    // Populate cart modal with current items
-    cart.forEach((item, index) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${item.name} - ₱${item.price.toFixed(2)}`;
-
-        // Add a remove button for each cart item
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.onclick = () => removeFromCart(index);
-        listItem.appendChild(removeButton);
-
-        cartItemsList.appendChild(listItem);
-    });
-
-    // Toggle modal visibility
-    cartModal.style.display = cartModal.style.display === 'none' ? 'block' : 'none';
-}
-
-// Function to handle adding an item to the cart
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', function () {
-        const productName = this.dataset.name;
-        const productPrice = parseFloat(this.dataset.price);
-
-        // Add the item to the cart
-        cart.push({ name: productName, price: productPrice });
-        updateCartButton(); // Update the cart count
-        alert(`${productName} added to cart!`); // Provide feedback to the user
-    });
-});
-
-// Function to remove an item from the cart
-function removeFromCart(index) {
-    cart.splice(index, 1); // Remove the item by index
-    updateCartButton();    // Update the cart button count
-    toggleCart();          // Refresh the cart modal
-}
-
-// Function to show the category (Bouquets or Souvenirs)
+// Show/hide categories
 function showCategory(category) {
     const bouquetsSection = document.getElementById('bouquets-section');
     const souvenirsSection = document.getElementById('souvenirs-section');
-
+    const buttons = document.querySelectorAll('.category-buttons button');
+    
+    // Remove active class from all buttons
+    buttons.forEach(button => button.classList.remove('active'));
+    
     if (category === 'bouquets') {
-        bouquetsSection.style.display = 'block';
+        bouquetsSection.style.display = 'grid';
         souvenirsSection.style.display = 'none';
-    } else {
+        // Add active class to bouquets button
+        buttons[0].classList.add('active');
+    } else if (category === 'souvenirs') {
         bouquetsSection.style.display = 'none';
-        souvenirsSection.style.display = 'block';
+        souvenirsSection.style.display = 'grid';
+        // Add active class to souvenirs button
+        buttons[1].classList.add('active');
     }
 }
 
-// Function to handle checkout button click
-function checkout() {
-    const checkoutForm = document.getElementById('checkout-form');
-    checkoutForm.style.display = 'block'; // Show the checkout form
+// Add to cart functionality
+function addToCart(name, price) {
+    const existingItem = cart.find(item => item.name === name);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            name: name,
+            price: parseFloat(price),
+            quantity: 1
+        });
+    }
+    
+    cartCount++;
+    updateCartButton();
+    
+    // Show success message (optional)
+    showAddToCartMessage(name);
+}
+
+// Show add to cart success message
+function showAddToCartMessage(itemName) {
+    // Create a temporary message element
+    const message = document.createElement('div');
+    message.textContent = `${itemName} added to cart!`;
+    message.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 25px;
+        z-index: 1002;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(message);
+    
+    // Remove message after 2 seconds
+    setTimeout(() => {
+        message.remove();
+    }, 2000);
+}
+
+// Update cart button
+function updateCartButton() {
+    const cartButton = document.getElementById('cart-button');
+    cartButton.textContent = `Cart (${cartCount})`;
+}
+
+// Toggle cart modal
+function toggleCart() {
     const cartModal = document.getElementById('cart-modal');
-    cartModal.style.display = 'none'; // Hide the cart modal
+    const isVisible = cartModal.style.display !== 'none';
+    
+    if (isVisible) {
+        cartModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    } else {
+        cartModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        updateCartDisplay();
+    }
 }
 
-// Handle the customer details form submission
-document.getElementById('customer-details-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent page reload
-
-    const customerName = document.getElementById('customer-name').value;
-    const customerPhone = document.getElementById('customer-phone').value;
-
-    // Calculate the total price of items in the cart
-    const totalPrice = cart.reduce((total, item) => total + item.price, 0);
-
-    // Show confirmation with customer details and total price
-    document.getElementById('customer-name-display').textContent = customerName;
-    document.getElementById('customer-phone-display').textContent = customerPhone;
-    document.getElementById('total-price-display').textContent = totalPrice.toFixed(2);
-
-    // Hide the checkout form and show the confirmation section
-    document.getElementById('checkout-form').style.display = 'none';
-    document.getElementById('confirmation-section').style.display = 'block';
-});
-
-// Finish the checkout process and clear the cart
-function finishCheckout() {
-    // Clear the cart
-    cart = [];
-    updateCartButton(); // Update the cart button text
-
-    // Hide the confirmation section
-    document.getElementById('confirmation-section').style.display = 'none';
+// Update cart display
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+    
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<li style="text-align: center; color: #7f8c8d; font-style: italic;">Your cart is empty</li>';
+        return;
+    }
+    
+    let total = 0;
+    cart.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <div style="flex: 1;">
+                <strong>${item.name}</strong><br>
+                <span style="color: #7f8c8d;">Qty: ${item.quantity} × $${item.price.toFixed(2)}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-weight: bold; color: #e74c3c;">$${(item.quantity * item.price).toFixed(2)}</span>
+                <button onclick="removeFromCart(${index})" style="
+                    background: #e74c3c;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 15px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                ">Remove</button>
+            </div>
+        `;
+        cartItems.appendChild(listItem);
+        total += item.quantity * item.price;
+    });
+    
+    // Add total
+    const totalItem = document.createElement('li');
+    totalItem.style.cssText = 'border-top: 2px solid #27ae60; margin-top: 15px; padding-top: 15px; font-weight: bold; font-size: 1.2rem;';
+    totalItem.innerHTML = `
+        <div style="flex: 1;">Total:</div>
+        <div style="color: #27ae60;">$${total.toFixed(2)}</div>
+    `;
+    cartItems.appendChild(totalItem);
 }
 
-// Cancel the checkout process and go back to the cart
-function cancelCheckout() {
-    // Hide the confirmation section and show the cart modal
-    document.getElementById('confirmation-section').style.display = 'none';
-    toggleCart(); // Show the cart modal again
+// Remove from cart
+function removeFromCart(index) {
+    const item = cart[index];
+    cartCount -= item.quantity;
+    cart.splice(index, 1);
+    updateCartButton();
+    updateCartDisplay();
 }
+
+// Checkout process
+function checkout() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    
+    // Hide cart modal
+    document.getElementById('cart-modal').style.display = 'none';
+    
+    // Show checkout form
+    document.getElementById('checkout-form').style.display = 'block';
+    document.body.style.overflow =
