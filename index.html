@@ -3,125 +3,1014 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flower Shop</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>IHarbor - Flowers & Souvenirs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: #667eea;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cart-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cart-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: 2px solid #e0e0e0;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .tab-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-button.active:hover {
+            color: white;
+        }
+
+        /* Products Grid */
+        .products-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #ccc;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Quantity Controls */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .qty-btn {
+            background: #f1f2f6;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .qty-btn:hover {
+            background: #ddd;
+        }
+
+        .qty-display {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Cart Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f2f6;
+        }
+
+        .modal-header h2 {
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background: #f1f2f6;
+        }
+
+        /* Cart Items */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f2f6;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .cart-total {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .cart-total h3 {
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        /* Form Styles */
+        .checkout-form {
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-cart-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .bounce {
+            animation: bounce 1s;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-bar {
+                order: 3;
+                width: 100%;
+                margin: 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Main content -->
-    <div id="shop-container">
-        <!-- Background Image -->
-        <div id="background-image"></div>
-        
-        <!-- About Us Section -->
-        <div class="about-us">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">IHarbor</a>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search flowers and souvenirs...">
+            </div>
+            <div class="header-actions">
+                <button class="cart-button" id="cartButton">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="hero">
             <h1>IHarbor</h1>
-            <div class="descript">
-                <h1>We offer a wide variety of fresh bouquets for all occasions. And souvenirs.</h1>
+            <p>We offer a wide variety of fresh bouquets for all occasions. And souvenirs.</p>
+        </section>
+
+        <!-- Category Tabs -->
+        <section class="category-tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-category="bouquets">🌸 Bouquets</button>
+                <button class="tab-button" data-category="souvenirs">🎁 Souvenirs</button>
             </div>
-        </div>
+        </section>
 
-        <!-- Category Buttons -->
-        <div class="category-buttons">
-            <button onclick="showCategory('bouquets')">Bouquets</button>
-            <button onclick="showCategory('souvenirs')">Souvenirs</button>
-        </div>
-
-        <!-- Bouquets Section -->
-        <div id="bouquets-section" class="products">
-            <div class="product-item">
-                <img src="/iharbor/images/rose.jpg" alt="Bouquet 1" />
-                <p class="price">$29.99</p>
-                <p>Rose bouquets</p>
-                <button class="add-to-cart" data-name="Rose Bouquet" data-price="29.99">Add to Cart</button>
+        <!-- Products Section -->
+        <section class="products-section">
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
             </div>
-            <div class="product-item">
-                <img src="/iharbor/images/sunflower.jpg" alt="Bouquet 2" />
-                <p class="price">$34.99</p>
-                <p>Sunflower</p>
-                <button class="add-to-cart" data-name="Sunflower" data-price="34.99">Add to Cart</button>
-            </div>
-            <div class="product-item">
-                <img src="/iharbor/images/tulips.jpg" alt="Bouquet 3" />
-                <p class="price">Php 400.00</p>
-                <p>Tulips</p>
-                <button class="add-to-cart" data-name="Tulips" data-price="400.00">Add to Cart</button>
-            </div>
-        </div>
-
-        <!-- Souvenirs Section -->
-        <div id="souvenirs-section" class="products" style="display: none;">
-            <div class="product-item">
-                <img src="/iharbor/images/keychain.jpg" alt="Souvenir 1" />
-                <p class="price">$5.99</p>
-                <p>Keychain</p>
-                <button class="add-to-cart" data-name="Keychain" data-price="5.99">Add to Cart</button>
-            </div>
-            <div class="product-item">
-                <img src="/iharbor/images/mug.jpg" alt="Souvenir 2" />
-                <p class="price">$10.99</p>
-                <p>Custom Mug</p>
-                <button class="add-to-cart" data-name="Custom Mug" data-price="10.99">Add to Cart</button>
-            </div>
-            <div class="product-item">
-                <img src="/iharbor/images/photo-frame.jpg" alt="Souvenir 3" />
-                <p class="price">$15.99</p>
-                <p>Photo Frame</p>
-                <button class="add-to-cart" data-name="Photo Frame" data-price="15.99">Add to Cart</button>
-            </div>
-        </div>
-
-        <!-- Cart Button -->
-        <button id="cart-button" onclick="toggleCart()">Cart (0)</button>
-
-        <!-- Shopping Cart Modal -->
-        <div id="cart-modal" class="cart-modal" style="display: none;">
-            <div class="cart-content">
-                <h2>Your Cart</h2>
-                <ul id="cart-items">
-                    <!-- Cart items will be dynamically added here -->
-                </ul>
-                <button onclick="checkout()">Checkout</button>
-                <button onclick="toggleCart()">Close</button>
-            </div>
-        </div>
-
-        <!-- Customer Details Form -->
-        <div id="checkout-form" class="checkout-form" style="display: none;">
-            <h2>Please Enter your Details</h2>
-            <form id="customer-details-form">
-            <input type="text" id="customer-name" placeholder="Your Name" required />
-            <input type="tel" id="customer-phone" placeholder="Your Phone Number" required />
-        
-        <!-- Delivery Options -->
-            <label for="delivery-option">Select Delivery Option:</label>
-            <select id="delivery-option" required>
-                <option value="pickup">Pick Up (No Fee)</option>
-                <option value="meetup">Meet Up (₱50 Fee)</option>
-                <option value="delivery">Delivery (₱100 Fee)</option>
-            </select>
-
-        <button type="submit">Submit</button>
-    </form>
-</div>
-
-
-        <!-- Confirmation Message -->
-        <div id="confirmation-section" class="confirmation-section" style="display: none;">
-            <h2>Thank You for Your Order!</h2>
-            <p><strong>Name:</strong> <span id="customer-name-display"></span></p>
-            <p><strong>Phone Number:</strong> <span id="customer-phone-display"></span></p>
-            <p><strong>Delivery Option:</strong> <span id="delivery-option-display"></span></p>
-            <p><strong>Total Price:</strong> ₱<span id="total-price-display"></span></p>
-            <button onclick="finishCheckout()">Finish</button>
-            <button onclick="cancelCheckout()">Cancel</button>
-        </div>
-
+        </section>
     </div>
 
-    <script src="scripts.js"></script>
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛒 Your Cart</h2>
+                <button class="close-btn" id="closeCartBtn">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal" style="display: none;">
+                <h3>Total: ₱<span id="totalAmount">0.00</span></h3>
+            </div>
+            <div id="checkoutSection"></div>
+        </div>
+    </div>
+
+    <script>
+        // Product Data
+        const products = {
+            bouquets: [
+                {
+                    id: 1,
+                    name: "Rose Bouquet",
+                    price: 29.99,
+                    currency: "$",
+                    image: "/iharbor/images/rose.jpg",
+                    emoji: "🌹"
+                },
+                {
+                    id: 2,
+                    name: "Sunflower",
+                    price: 34.99,
+                    currency: "$",
+                    image: "/iharbor/images/sunflower.jpg",
+                    emoji: "🌻"
+                },
+                {
+                    id: 3,
+                    name: "Tulips",
+                    price: 400.00,
+                    currency: "₱",
+                    image: "/iharbor/images/tulips.jpg",
+                    emoji: "🌷"
+                }
+            ],
+            souvenirs: [
+                {
+                    id: 4,
+                    name: "Keychain",
+                    price: 5.99,
+                    currency: "$",
+                    image: "/iharbor/images/keychain.jpg",
+                    emoji: "🗝️"
+                },
+                {
+                    id: 5,
+                    name: "Custom Mug",
+                    price: 10.99,
+                    currency: "$",
+                    image: "/iharbor/images/mug.jpg",
+                    emoji: "☕"
+                },
+                {
+                    id: 6,
+                    name: "Photo Frame",
+                    price: 15.99,
+                    currency: "$",
+                    image: "/iharbor/images/photo-frame.jpg",
+                    emoji: "🖼️"
+                }
+            ]
+        };
+
+        // App State
+        let cart = [];
+        let currentCategory = 'bouquets';
+        let isCheckingOut = false;
+
+        // DOM Elements
+        const productsGrid = document.getElementById('productsGrid');
+        const cartModal = document.getElementById('cartModal');
+        const cartButton = document.getElementById('cartButton');
+        const cartCount = document.getElementById('cartCount');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const totalAmount = document.getElementById('totalAmount');
+        const checkoutSection = document.getElementById('checkoutSection');
+        const searchInput = document.getElementById('searchInput');
+
+        // Initialize App
+        function init() {
+            renderProducts();
+            setupEventListeners();
+            updateCartUI();
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Category tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const category = e.target.dataset.category;
+                    switchCategory(category);
+                });
+            });
+
+            // Cart modal
+            cartButton.addEventListener('click', openCart);
+            closeCartBtn.addEventListener('click', closeCart);
+            cartModal.addEventListener('click', (e) => {
+                if (e.target === cartModal) closeCart();
+            });
+
+            // Search functionality
+            searchInput.addEventListener('input', handleSearch);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && cartModal.classList.contains('active')) {
+                    closeCart();
+                }
+            });
+        }
+
+        // Switch Category
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            renderProducts();
+        }
+
+        // Render Products
+        function renderProducts(filteredProducts = null) {
+            const productsToShow = filteredProducts || products[currentCategory];
+            
+            productsGrid.innerHTML = productsToShow.map(product => `
+                <div class="product-card" data-product-id="${product.id}">
+                    <div class="product-image">
+                        ${product.emoji}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.currency}${product.price.toFixed(2)}</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="decreaseQuantity(${product.id})">-</button>
+                            <input type="number" class="qty-display" id="qty-${product.id}" value="1" min="1" max="99">
+                            <button class="qty-btn" onclick="increaseQuantity(${product.id})">+</button>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="btn-secondary" onclick="quickView(${product.id})">👁️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderProducts();
+                return;
+            }
+
+            const allProducts = [...products.bouquets, ...products.souvenirs];
+            const filteredProducts = allProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm)
+            );
+
+            renderProducts(filteredProducts);
+        }
+
+        // Quantity controls
+        function increaseQuantity(productId) {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const currentQty = parseInt(qtyInput.value);
+            if (currentQty < 99) {
+                qtyInput.value = currentQty + 1;
+            }
+        }
+
+        function decreaseQuantity(productId) {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const currentQty = parseInt(qtyInput.value);
+            if (currentQty > 1) {
+                qtyInput.value = currentQty - 1;
+            }
+        }
+
+        // Add to Cart
+        function addToCart(productId) {
+            const product = [...products.bouquets, ...products.souvenirs]
+                .find(p => p.id === productId);
+            
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(qtyInput.value);
+
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: quantity
+                });
+            }
+
+            updateCartUI();
+            
+            // Reset quantity input
+            qtyInput.value = 1;
+            
+            // Add bounce animation to cart button
+            cartButton.classList.add('bounce');
+            setTimeout(() => cartButton.classList.remove('bounce'), 1000);
+
+            // Show success message
+            showNotification('Product added to cart!', 'success');
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+            renderCartItems();
+        }
+
+        // Update cart quantity
+        function updateCartQuantity(productId, newQuantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    item.quantity = newQuantity;
+                    updateCartUI();
+                    renderCartItems();
+                }
+            }
+        }
+
+        // Quick View
+        function quickView(productId) {
+            const product = [...products.bouquets, ...products.souvenirs]
+                .find(p => p.id === productId);
+            
+            alert(`${product.name}\nPrice: ${product.currency}${product.price.toFixed(2)}\n\nA beautiful addition to any occasion!`);
+        }
+
+        // Cart Management
+        function openCart() {
+            cartModal.classList.add('active');
+            renderCartItems();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            cartModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            isCheckingOut = false;
+            renderCartItems();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function renderCartItems() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some beautiful flowers or souvenirs!</p>
+                    </div>
+                `;
+        }
+
+        function finishOrder() {
+            cart = [];
+            updateCartUI();
+            closeCart();
+            showNotification('Thank you for your order! 🌸', 'success');
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                ${type === 'success' ? 'background: #27ae60;' : 'background: #e74c3c;'}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
+                cartTotal.style.display = 'none';
+                checkoutSection.innerHTML = '';
+                return;
+            }
 
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div style="font-size: 2rem;">${item.emoji}</div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">${item.currency}${item.price.toFixed(2)} each</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                        <span class="qty-display">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                    </div>
+                    <button class="btn-secondary" onclick="removeFromCart(${item.id})" style="margin-left: 1rem;">🗑️</button>
+                </div>
+            `).join('');
 
+            const total = cart.reduce((sum, item) => {
+                // Convert all to PHP for consistent total
+                const priceInPHP = item.currency === '$' ? item.price * 56 : item.price;
+                return sum + (priceInPHP * item.quantity);
+            }, 0);
 
+            totalAmount.textContent = total.toFixed(2);
+            cartTotal.style.display = 'block';
 
+            if (!isCheckingOut) {
+                checkoutSection.innerHTML = `
+                    <button class="btn-primary" onclick="startCheckout()" style="width: 100%; margin-top: 1rem;">
+                        Proceed to Checkout
+                    </button>
+                `;
+            }
+        }
+
+        // Checkout Process
+        function startCheckout() {
+            isCheckingOut = true;
+            checkoutSection.innerHTML = `
+                <div class="checkout-form">
+                    <h3>Customer Details</h3>
+                    <div class="form-group">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone Number</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deliveryOption">Delivery Option</label>
+                        <select id="deliveryOption" required>
+                            <option value="pickup">Pick Up (No Fee)</option>
+                            <option value="meetup">Meet Up (₱50 Fee)</option>
+                            <option value="delivery">Delivery (₱100 Fee)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Address (if delivery/meetup)</label>
+                        <input type="text" id="customerAddress">
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button class="btn-secondary" onclick="cancelCheckout()" style="flex: 1;">Cancel</button>
+                        <button class="btn-primary" onclick="submitOrder()" style="flex: 1;">Place Order</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cancelCheckout() {
+            isCheckingOut = false;
+            renderCartItems();
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const deliveryOption = document.getElementById('deliveryOption').value;
+            const address = document.getElementById('customerAddress').value.trim();
+
+            if (!name || !phone) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            if ((deliveryOption === 'delivery' || deliveryOption === 'meetup') && !address) {
+                showNotification('Please provide an address for delivery/meetup', 'error');
+                return;
+            }
+
+            // Calculate final total with delivery fee
+            let subtotal = cart.reduce((sum, item) => {
+                const priceInPHP = item.currency === '$' ? item.price * 56 : item.price;
+                return sum + (priceInPHP * item.quantity);
+            }, 0);
+
+            let deliveryFee = 0;
+            if (deliveryOption === 'meetup') deliveryFee = 50;
+            if (deliveryOption === 'delivery') deliveryFee = 100;
+
+            const finalTotal = subtotal + deliveryFee;
+
+            // Show order confirmation
+            checkoutSection.innerHTML = `
+                <div class="success-message">
+                    <h3>🎉 Order Placed Successfully!</h3>
+                    <div style="text-align: left; margin-top: 1rem;">
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
+                        <p><strong>Delivery:</strong> ${deliveryOption.charAt(0).toUpperCase() + deliveryOption.slice(1)}</p>
+                        ${address ? `<p><strong>Address:</strong> ${address}</p>` : ''}
+                        <p><strong>Subtotal:</strong> ₱${subtotal.toFixed(2)}</p>
+                        ${deliveryFee > 0 ? `<p><strong>Delivery Fee:</strong> ₱${deliveryFee.toFixed(2)}</p>` : ''}
+                        <p><strong>Total:</strong> ₱${finalTotal.toFixed(2)}</p>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <p><em>We'll contact you shortly to confirm your order!</em></p>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="finishOrder
