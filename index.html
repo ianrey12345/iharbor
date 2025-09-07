@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flower Shop</title>
+    <title>IHarbor Flower Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,50 +22,50 @@
 
         <!-- Category Buttons -->
         <div class="category-buttons">
-            <button onclick="showCategory('bouquets')">Bouquets</button>
+            <button onclick="showCategory('bouquets')" class="active">Bouquets</button>
             <button onclick="showCategory('souvenirs')">Souvenirs</button>
         </div>
 
         <!-- Bouquets Section -->
         <div id="bouquets-section" class="products">
             <div class="product-item">
-                <img src="/iharbor/images/rose.jpg" alt="Bouquet 1" />
+                <img src="/iharbor/images/rose.jpg" alt="Rose Bouquet" />
                 <p class="price">$29.99</p>
                 <p>Rose bouquets</p>
                 <button class="add-to-cart" data-name="Rose Bouquet" data-price="29.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/sunflower.jpg" alt="Bouquet 2" />
+                <img src="/iharbor/images/sunflower.jpg" alt="Sunflower" />
                 <p class="price">$34.99</p>
                 <p>Sunflower</p>
                 <button class="add-to-cart" data-name="Sunflower" data-price="34.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/tulips.jpg" alt="Bouquet 3" />
-                <p class="price">Php 400.00</p>
+                <img src="/iharbor/images/tulips.jpg" alt="Tulips" />
+                <p class="price">₱400.00</p>
                 <p>Tulips</p>
                 <button class="add-to-cart" data-name="Tulips" data-price="400.00">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/fuzzy.jpg" alt="Bouquet 4" />
+                <img src="/iharbor/images/fuzzy.jpg" alt="Fuzzy Flowers" />
                 <p class="price">$25.99</p>
                 <p>Fuzzy Flowers</p>
                 <button class="add-to-cart" data-name="Fuzzy Flowers" data-price="25.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/chocolate.jpg" alt="Bouquet 5" />
+                <img src="/iharbor/images/chocolate.jpg" alt="Chocolate Cosmos" />
                 <p class="price">$39.99</p>
                 <p>Chocolate Cosmos</p>
                 <button class="add-to-cart" data-name="Chocolate Cosmos" data-price="39.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/butterfly.jpg" alt="Bouquet 6" />
+                <img src="/iharbor/images/butterfly.jpg" alt="Butterfly Bush" />
                 <p class="price">$32.99</p>
                 <p>Butterfly Bush</p>
                 <button class="add-to-cart" data-name="Butterfly Bush" data-price="32.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/satin.jpg" alt="Bouquet 7" />
+                <img src="/iharbor/images/satin.jpg" alt="Satin Bouquet" />
                 <p class="price">$42.99</p>
                 <p>Satin Bouquet</p>
                 <button class="add-to-cart" data-name="Satin Bouquet" data-price="42.99">Add to Cart</button>
@@ -75,19 +75,19 @@
         <!-- Souvenirs Section -->
         <div id="souvenirs-section" class="products" style="display: none;">
             <div class="product-item">
-                <img src="/iharbor/images/keychain.jpg" alt="Souvenir 1" />
+                <img src="/iharbor/images/keychain.jpg" alt="Keychain" />
                 <p class="price">$5.99</p>
                 <p>Keychain</p>
                 <button class="add-to-cart" data-name="Keychain" data-price="5.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/mug.jpg" alt="Souvenir 2" />
+                <img src="/iharbor/images/mug.jpg" alt="Custom Mug" />
                 <p class="price">$10.99</p>
                 <p>Custom Mug</p>
                 <button class="add-to-cart" data-name="Custom Mug" data-price="10.99">Add to Cart</button>
             </div>
             <div class="product-item">
-                <img src="/iharbor/images/photo-frame.jpg" alt="Souvenir 3" />
+                <img src="/iharbor/images/photo-frame.jpg" alt="Photo Frame" />
                 <p class="price">$15.99</p>
                 <p>Photo Frame</p>
                 <button class="add-to-cart" data-name="Photo Frame" data-price="15.99">Add to Cart</button>
@@ -104,42 +104,52 @@
                 <ul id="cart-items">
                     <!-- Cart items will be dynamically added here -->
                 </ul>
-                <button onclick="checkout()">Checkout</button>
-                <button onclick="toggleCart()">Close</button>
+                <div class="cart-buttons">
+                    <button onclick="checkout()" class="checkout-btn">Checkout</button>
+                    <button onclick="toggleCart()" class="close-btn">Close</button>
+                </div>
             </div>
         </div>
 
         <!-- Customer Details Form -->
         <div id="checkout-form" class="checkout-form" style="display: none;">
-            <h2>Please Enter your Details</h2>
-            <form id="customer-details-form">
-            <input type="text" id="customer-name" placeholder="Your Name" required />
-            <input type="tel" id="customer-phone" placeholder="Your Phone Number" required />
-        
-        <!-- Delivery Options -->
-            <label for="delivery-option">Select Delivery Option:</label>
-            <select id="delivery-option" required>
-                <option value="pickup">Pick Up (No Fee)</option>
-                <option value="meetup">Meet Up (₱50 Fee)</option>
-                <option value="delivery">Delivery (₱100 Fee)</option>
-            </select>
+            <div class="form-content">
+                <h2>Please Enter your Details</h2>
+                <form id="customer-details-form">
+                    <input type="text" id="customer-name" placeholder="Your Name" required />
+                    <input type="tel" id="customer-phone" placeholder="Your Phone Number" required />
+                    
+                    <!-- Delivery Options -->
+                    <label for="delivery-option">Select Delivery Option:</label>
+                    <select id="delivery-option" required>
+                        <option value="">Choose delivery option</option>
+                        <option value="pickup">Pick Up (No Fee)</option>
+                        <option value="meetup">Meet Up (₱50 Fee)</option>
+                        <option value="delivery">Delivery (₱100 Fee)</option>
+                    </select>
 
-        <button type="submit">Submit</button>
-    </form>
-</div>
-
+                    <button type="submit">Submit Order</button>
+                    <button type="button" onclick="cancelCheckout()">Cancel</button>
+                </form>
+            </div>
+        </div>
 
         <!-- Confirmation Message -->
         <div id="confirmation-section" class="confirmation-section" style="display: none;">
-            <h2>Thank You for Your Order!</h2>
-            <p><strong>Name:</strong> <span id="customer-name-display"></span></p>
-            <p><strong>Phone Number:</strong> <span id="customer-phone-display"></span></p>
-            <p><strong>Delivery Option:</strong> <span id="delivery-option-display"></span></p>
-            <p><strong>Total Price:</strong> ₱<span id="total-price-display"></span></p>
-            <button onclick="finishCheckout()">Finish</button>
-            <button onclick="cancelCheckout()">Cancel</button>
+            <div class="confirmation-content">
+                <h2>Thank You for Your Order!</h2>
+                <div class="order-details">
+                    <p><strong>Name:</strong> <span id="customer-name-display"></span></p>
+                    <p><strong>Phone Number:</strong> <span id="customer-phone-display"></span></p>
+                    <p><strong>Delivery Option:</strong> <span id="delivery-option-display"></span></p>
+                    <p><strong>Total Price:</strong> ₱<span id="total-price-display"></span></p>
+                </div>
+                <div class="confirmation-buttons">
+                    <button onclick="finishCheckout()" class="finish-btn">Finish</button>
+                    <button onclick="cancelCheckout()" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
         </div>
-
     </div>
 
     <script src="scripts.js"></script>
